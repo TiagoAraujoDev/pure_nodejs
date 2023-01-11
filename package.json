@@ -1,0 +1,13 @@
+{
+  "name": "nodejs_api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "an api build only with node builtins modules",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch ./src/server.js"
+  },
+  "keywords": [],
+  "author": "tiago araujo",
+  "license": "ISC"
+}
