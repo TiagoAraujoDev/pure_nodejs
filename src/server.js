@@ -1,8 +1,7 @@
 import http from "node:http";
 
 import { json } from "./middlewares/json.js";
-
-const users = [];
+import { userRoutes } from "./routes/userRoutes.js";
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
@@ -10,23 +9,12 @@ const server = http.createServer(async (req, res) => {
   // middleware to parse json
   await json(req, res);
 
-  if (method === "GET" && url === "/users") {
-    return res.end(JSON.stringify(users));
-  }
+  const route = userRoutes.find((route) => {
+    return route.method === method && route.path === url;
+  })
 
-  if (method === "POST" && url === "/users") {
-    const { name, email } = req.body;
-    const id = users.length + 1;
-
-    const newUser = {
-      id,
-      name,
-      email,
-    };
-
-    users.push(newUser);
-
-    return res.writeHead(201).end();
+  if (route) {
+    return route.handler(req, res);
   }
 
   return res.writeHead(404).end();
